@@ -1,24 +1,22 @@
 #! /bin/bash
 
+apt-get install apt-transport-https
+
 echo "Installing Java 8"
-echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | sudo tee /etc/apt/sources.list.d/webupd8team-java.list
-echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | sudo tee -a /etc/apt/sources.list.d/webupd8team-java.list
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
-sudo apt-get update
-echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-sudo apt-get -y install oracle-java8-set-default
+add-apt-repository -y ppa:webupd8team/java
+apt-get update
+echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+apt-get -y install oracle-java8-installer
 
 echo "Installing Elasticsearch"
-wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-echo "deb http://packages.elastic.co/elasticsearch/2.x/debian stable main" | sudo tee -a /etc/apt/sources.list.d/elasticsearch-2.x.list
-sudo apt-get update
-sudo apt-get -y install elasticsearch
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
+echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+apt-get update
+apt-get -y install elasticsearch
 
 # Append outside access restrict
 #echo "network.host: localhost" >> /etc/elasticsearch/elasticsearch.yml
 
-sudo systemctl restart elasticsearch
-
 echo "Enabling Elasticsearch in services"
-sudo systemctl daemon-reload
-sudo systemctl enable elasticsearch
+update-rc.d elasticsearch defaults 95 10
+service elasticsearch start
