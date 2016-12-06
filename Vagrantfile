@@ -9,16 +9,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   if Vagrant.has_plugin?("vagrant-proxyconf")
-    config.proxy.http     = pref['httproxy']
-    config.proxy.https    = pref['httpsproxy']
+    config.proxy.http     = pref['proxyhttp']
+    config.proxy.https    = pref['proxyhttps']
     config.proxy.no_proxy = "localhost,127.0.0.1,.example.com"
   end
+  if pref['32bit']
+    config.vm.box = "ubuntu/xenial32"
+  else
+    config.vm.box = "ubuntu/xenial64"
+  end
 
-  config.vm.box = "elastic/ubuntu-14.04-x86_64"
+  config.vm.network "private_network", ip: "192.168.35.25", auto_config: false
+  config.vm.network "forwarded_port", guest: 5601, host: 5601
+  config.vm.network "forwarded_port", guest: 9200, host: 9200
 
   config.vm.provider :virtualbox do |vb|
     vb.name = "elasticBox"
     vb.gui = true
     vb.customize ["modifyvm", :id, "--memory", pref["memory"]]
   end
+
+  config.vm.provision "shell", path: "elasticsearch.sh"
+  config.vm.provision "shell", path: "kibana.sh"
 end
