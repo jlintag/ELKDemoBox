@@ -30,4 +30,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "shell", path: "elasticsearch.sh"
   config.vm.provision "shell", path: "kibana.sh"
+  config.vm.provision "shell", path: "ngnix.sh"
 end
