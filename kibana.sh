@@ -4,8 +4,8 @@ echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | tee -a /e
 apt-get update
 apt-get -y install kibana
 
-# Append outside access restriction
-#echo "network.host: localhost" >> /etc/elasticsearch/elasticsearch.yml
+# Replace outside access restriction
+sed -i 's/server.host:\"0.0.0.0\"/server.host:\"localhost\"' /opt/kibana/config/kibana.yml
 
 echo "Enabling Kibana in services"
 update-rc.d kibana defaults 95 10
