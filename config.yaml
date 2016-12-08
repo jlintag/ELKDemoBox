@@ -1,4 +1,4 @@
 32bit: false
-memory: "2048"
+memory: "4096"
 proxyhttp: ""
 proxyhttps: ""
