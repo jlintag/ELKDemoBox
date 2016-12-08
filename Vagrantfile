@@ -19,8 +19,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.box = "ubuntu/xenial64"
   end
 
-  config.vm.network "forwarded_port", guest: 5601, host: 5601
-  config.vm.network "forwarded_port", guest: 9200, host: 9200
+  # config.vm.network "forwarded_port", guest: 5601, host: 5601
+  # config.vm.network "forwarded_port", guest: 9200, host: 9200
 
   config.vm.provider :virtualbox do |vb|
     vb.name = "elasticBox"
