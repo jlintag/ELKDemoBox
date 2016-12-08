@@ -20,7 +20,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   else
     config.vm.box = "ubuntu/xenial64"
   end
-
+  config.vm.network :private_network, ip: "192.168.68.8"
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, id: "nginx", auto_correct: true
   # config.vm.network "forwarded_port", guest: 5601, host: 5601
   # config.vm.network "forwarded_port", guest: 9200, host: 9200
 
@@ -32,5 +33,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "shell", path: "elasticsearch.sh"
   config.vm.provision "shell", path: "kibana.sh"
-  config.vm.provision "shell", path: "ngnix.sh"
+  config.vm.provision "shell", path: "nginx.sh"
 end
